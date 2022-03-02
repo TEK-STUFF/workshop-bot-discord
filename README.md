@@ -126,8 +126,62 @@ client = discord.Client()
 
 Sauf que là, si on lance le programme, eh bah il se passe pas grand chose :/
 
+# Récupération du token de connexion
+
 Pour qu'il se passe quelque chose, on va devoir aller chercher le token de notre bot sur le portail développeur
 
 ![Copy Token](./img/copytoken.png)
 
 **ATTENTION !** : si quelqu'un trouve le moyen de récupérer ce token, cette personne aura le contrôle total de votre bot (et accessoirement des serveurs sur lesquels il se trouve) (mauvaise idée, vu qu'on l'a mis admin)
+
+Ce token permet de prendre contrôle du bot, et de recevoir les divers events depuis l'API Discord. Cela est bien evidemment nécessaire pour pouvoir développer plein de fonctionnalités rigolotes.
+
+Comme évoqué précedemment, il est important de garder notre token le plus caché possible. Nous allons donc utiliser le module dotenv pour nous permettre de stocker le token dans un fichier caché, séparé de notre code.
+
+Ce fichier caché permet d'ajouter une variable d'environnement présente uniquement dans le dossier d'exécution du bot. La syntaxe est la suivante :
+
+![Dotenv](./img/dotenvsetup.png)
+
+Installation du module python-dotenv :
+
+`$ pip install python-dotenv`
+
+Une fois le module installé, nous allons pouvoir ajouter les lignes suivantes dans notre programme :
+
+```
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
+TOKEN = getenv('DISCORD_TOKEN')
+```
+
+Nous avons donc récupéré le token dans la variable globale *TOKEN*. Le fonctionnement peut être vérifié avec un simple `print(TOKEN)`.
+
+Notre bot peut désormais communiquer avec l'API de Discord, il ne nous manque plus qu'à lui dire de se connecter.
+
+Cela est effectué en ajoutant cette ligne à la toute fin du fichier (elle devra rester à la fin, car elle joue le rôle d'un "main"):
+
+`client.run(TOKEN)`
+
+Désormais, à l'exécution du programme, le bot apparaît avec un statut "connecté" sur le serveur !
+
+![Online](./img/onlinebot.png)
+
+# Mise en place du "on_ready"
+
+Au tout début du workshop, j'ai évoqué le fonctionnement du wrapper python par évenements asynchrones. Nous allons ici coder notre premier gestionnaire d'events, le "on_ready". Cet event sera déclenché à chaque connexion du bot au service, une fois que celle-ci est effectuée et que tout est en ordre.
+
+```
+@client.event
+async def on_ready() -> None :
+    print(f"Je suis connecté à discord avec le compte '{client.user}' !")
+    serveur = client.guilds[0]
+    channel = serveur.get_channel(948344509006229504)
+    if channel is not None :
+        await channel.send("Bonjour discord !")
+    else :
+        print("Oups, je n'ai pas pu récupérer le channel")
+```
+
+On peut voir ici la syntaxe pour déclarer un gestionnaire d'évènements, ainsi que les fonctions asynchrones. Encore une fois, je vous invite à lire l'[API Reference](https://discordpy.readthedocs.io/en/stable/api.html) pour plus d'infos, et aussi pour découvrir tous les évènements disponibles pour un bot.
