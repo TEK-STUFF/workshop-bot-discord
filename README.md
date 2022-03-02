@@ -98,3 +98,35 @@ Nous allons encore séléctionner le scope "bot", puis les permissions administr
 En cliquant sur celui-ci vous allez pouvoir inviter le bot sur le serveur rejoint précédemment, normalement vous avez les perms pour ça.
 
 Si vous comptez mettre le bot sur d'autres serveurs, gardez le lien bien au chaud, ça vous évitera de devoir refaire cette étape.
+
+## Le bot est sur le serveur, let's goooooo !
+
+***
+# Hello world
+
+###### fichier : helloworld.py
+
+Enfin, on va coder !
+
+Le wrapper discord.py fonctionne sur une base de fonctions asynchrones et d'events. Pour plus d'infos, je vous invite à lire [la documentation](https://discordpy.readthedocs.io/en/stable/) et l'[API Reference](https://discordpy.readthedocs.io/en/stable/api.html).
+
+La base de notre bot va tourner autour du "client", qui représente dans le code l'utilisateur que nous avons crée précédemment.
+
+La déclaration du client est réalisée comme suit :
+
+```
+#!/usr/bin/env python3
+#coding=utf8
+
+import discord
+
+client = discord.Client()
+```
+
+Sauf que là, si on lance le programme, eh bah il se passe pas grand chose :/
+
+Pour qu'il se passe quelque chose, on va devoir aller chercher le token de notre bot sur le portail développeur
+
+![Copy Token](./img/copytoken.png)
+
+**ATTENTION !** : si quelqu'un trouve le moyen de récupérer ce token, cette personne aura le contrôle total de votre bot (et accessoirement des serveurs sur lesquels il se trouve) (mauvaise idée, vu qu'il est un peu admin)
