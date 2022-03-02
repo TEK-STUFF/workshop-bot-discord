@@ -23,7 +23,9 @@ Afin de pouvoir réaliser ce workshop, il vous faudra une installation à jour d
 
 `$ python3 --version`
 
-Nous allons ensuite avoir besoin de pip pour installer les modules nécéssaires :
+Nous allons ensuite avoir besoin de pip pour installer les modules nécéssaires.
+
+Si vous n'avez pas pip :
 
 Ubuntu - Debian : `$ apt install python3-pip`
 
