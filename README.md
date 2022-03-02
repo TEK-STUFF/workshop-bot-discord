@@ -1,4 +1,4 @@
-# Workshop - Bot discord python   
+# Workshop - Bot discord python
 
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue?style=flat-square&logo=license-gplv3)](https://choosealicense.com/licenses/gpl-3.0/)
 
@@ -8,38 +8,38 @@ Un petit workshop Epitech pour faire un bot discord en python !
 
 ## Introduction
 
-On va utiliser le wrapper python de l'API de Discord afin de coder un début de bot et de se familiariser avec l'API   
+On va utiliser le wrapper python de l'API de Discord afin de coder un début de bot et de se familiariser avec l'API
 La version "rewrite" du wrapper python sera utilisée afin de supporter les dernières fonctionnalités de Discord.
-   
-Différents wrappers existent pour l'API de Discord. Il n'y a pas de différence de perf majeure entre les wrappers Python, JS, C#, etc...   
-   
+
+Différents wrappers existent pour l'API de Discord. Il n'y a pas de différence de perf majeure entre les wrappers Python, JS, C#, etc...
+
 Le but de ce workshop n'est pas de vous faire recoder MEE6 mais bien de vous montrer la puissance et le côté très accessible de l'outil.
 
 #
-## Outils   
-> Python   
+## Outils
+> Python
 
-Afin de pouvoir réaliser ce workshop, il vous faudra une installation à jour de python (version 3.5.3 minimum). Afin de vérifier votre installation :   
+Afin de pouvoir réaliser ce workshop, il vous faudra une installation à jour de python (version 3.5.3 minimum). Afin de vérifier votre installation :
 
 `$ python3 --version`
 
 Nous allons ensuite avoir besoin de pip pour installer les modules nécéssaires :
 
-Ubuntu - Debian : `$ apt install python3-pip`   
-Fedora - RHEL : `$ dnf install python3-pip`   
-Arch - Manjaro : `$ pacman -S python3-pip`   
+Ubuntu - Debian : `$ apt install python3-pip`
+
+Fedora - RHEL : `$ dnf install python3-pip`
+
+Arch - Manjaro : `$ pacman -S python3-pip`
 
 Une fois votre version de python et de pip à jour, nous pouvons procéder à l'installation des modules nécéssaires.
 
-> Lib Discord   
+> Lib Discord
 
-`$ python3 -m pip install -U discord.py`   
+`$ python3 -m pip install -U discord.py`
 
-Voilà.
+Je vais donc vous laisser ouvrir votre éditeur de texte préféré, éventuellement équipé de diverses extensions pour coder en python.
 
-Je vais donc vous laisser ouvrir votre éditeur de texte préféré, éventuellement équipé de diverses extensions pour coder en python.   
-
-***
+---
 
 # Le commencement
 
@@ -57,7 +57,6 @@ Quelques infos vous seront demandées pour finir la création de l'application. 
 
 Félicitations, votre application est vivante !
 
-#
 
 ## Création d'un utilisateur "bot"
 
@@ -67,7 +66,6 @@ Naviguez dans le menu "Bot" dans la barre de gauche
 
 Puis cliquez sur le bouton "Add bot". Et voilà, le bot est né !
 
-#
 
 ## Gestion des permissions
 
@@ -116,7 +114,6 @@ La base de notre bot va tourner autour du "client", qui représente dans le code
 La déclaration du client est réalisée comme suit :
 
 ```
-#!/usr/bin/env python3
 #coding=utf8
 
 import discord
@@ -138,7 +135,7 @@ Ce token permet de prendre contrôle du bot, et de recevoir les divers events de
 
 Comme évoqué précedemment, il est important de garder notre token le plus caché possible. Nous allons donc utiliser le module dotenv pour nous permettre de stocker le token dans un fichier caché, séparé de notre code.
 
-Ce fichier caché permet d'ajouter une variable d'environnement présente uniquement dans le dossier d'exécution du bot. La syntaxe est la suivante :
+Ce fichier caché (appellé *.env*) permet d'ajouter une variable d'environnement présente uniquement dans le dossier d'exécution du bot. La syntaxe est la suivante :
 
 ![Dotenv](./img/dotenvsetup.png)
 
@@ -185,3 +182,85 @@ async def on_ready() -> None :
 ```
 
 On peut voir ici la syntaxe pour déclarer un gestionnaire d'évènements, ainsi que les fonctions asynchrones. Encore une fois, je vous invite à lire l'[API Reference](https://discordpy.readthedocs.io/en/stable/api.html) pour plus d'infos, et aussi pour découvrir tous les évènements disponibles pour un bot.
+
+---
+
+# Lecture et réaction aux messages
+
+###### fichier : message_reader.py
+
+Avoir un bot qui parle c'est bien, mais un bot qui répond quand on parle de lui, c'est mieux !
+
+Pour la suite, on va garder la même base que ce qui a été réalisé jusqu'à présent, en ajoutant des blocs pour faire ce qui nous plaît.
+
+# Event "on_message"
+
+Comme son nom l'indique, il sera appellé dès qu'un nouveau message est envoyé dans un salon visible par le bot. C'est l'event qui sera appellé le plus souvent, donc il est important de minimiser l'utilisation des ressources dans la fonction de base.
+
+Ici, nous allons juste coder un petit gestionnaire d'event qui répondra au message quand quelqu'un dira le nom du bot.
+
+```
+@client.event
+async def on_message(message) :
+    if client.user.name in message.content :
+        await message.reply("coucou c'est moi")
+```
+
+Les objets [*client*](https://discordpy.readthedocs.io/en/stable/api.html#clientuser), [*message*](https://discordpy.readthedocs.io/en/stable/api.html#message), [*user*](https://discordpy.readthedocs.io/en/stable/api.html#user), etc... sont des classes déclarées dans la librairie discord.py, et elles sont composées de (beaucoup) de champs et de méthodes. Encore une fois, tout est très bien expliqué dans la doc, et vous trouverez toutes les infos techniques là bas !
+
+# Ajout de réactions
+
+En plus de pouvoir nous répondre, le bot a accès à toutes les fonctionnalités qu'un utilisateur normal pourrait utiliser, on peut donc ajouter des réactions !
+
+`await message.add_reaction("💯")`
+
+La fonction "add_reaction" prend en charge tous les emojis de base, ainsi que l'identifiant des emojis customisés. Ceux-ci sont utilisables dans tous les serveurs où le bot est présent. C'est une sorte d'abonnement nitro gratuit, donc plutôt cool ! (j'ai déjà essayé d'utiliser un compte de bot comme compte personnel, ça ne marche pas) (c'est aussi interdit par les conditions d'utilisation...)
+
+---
+
+# Utilisation de commandes
+
+###### fichiers : command_bot.py, commands.py
+
+Les commandes sont un élément nécessaire pour tout bot qui se respecte ! La librairie nous procure un utilisateur "bot" en plus du client que nous utilisons déjà, le bot permettant de déclarer des commandes très facilement. Seul point négatif, le "bot" nous restreint au niveau des fonctionnalités disponibles sur les commandes, et est globalement moins pratique à utiliser.
+
+Nous allons donc recoder notre propre gestionnaire de commandes !
+
+```
+if message.content and message.content[0] == '>' :
+        cmd = str(message.content.split()[0])
+        cmd = cmd[1:]
+        try :
+            fonction = getattr(commands, cmd)
+            await fonction(message,client)
+        except (AttributeError) :
+            await message.add_reaction("⁉️")
+```
+
+Ce bout de code va venir dans notre gestionnaire "on_message" pour détecter le préfixe de la commande, ce qui va déclencher le parsing du message.
+
+Nous allons ensuite essayer de récupérer la fonction correspondante dans le fichier *commands.py* (que nous importons en tant que module au début du fichier)
+
+Les arguments de toutes les commandes dans ce fichier doivent être les mêmes pour ne pas causer de problèmes avec *getattr()*.
+
+Si la commande demandée n'existe pas, *getattr()* envoie un *AttributeError*, dont nous nous servons pour signifier à l'utilisateur que la commande n'est pas disponible.
+
+Ce système nous permet de remplacer un "if elif else" énorme, mais aussi d'implémenter une nouvelle commande avec un simple redémarrage du bot, sans besoin de modifier le gestionnaire d'évènements.
+
+Comme commande témoin, nous pouvons implémenter un "say", qui se contentera de répéter le message de l'utilisateur.
+
+```
+#coding=utf8
+
+import discord
+
+async def say(message, client) :
+    text = str(message.content.split(' ', 1)[1])
+    await message.channel.send(text)
+```
+
+![He Repeats](./img/he_repeats.png)
+
+J'espère que ce workshop vous a plu, je vous laisse utiliser votre imagination pour proposer des commandes rigolotes !
+
+N'hésitez surtout pas en cas de questions !
