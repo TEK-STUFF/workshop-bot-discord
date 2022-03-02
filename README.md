@@ -101,7 +101,8 @@ Si vous comptez mettre le bot sur d'autres serveurs, gardez le lien bien au chau
 
 ## Le bot est sur le serveur, let's goooooo !
 
-***
+---
+
 # Hello world
 
 ###### fichier : helloworld.py
@@ -129,4 +130,4 @@ Pour qu'il se passe quelque chose, on va devoir aller chercher le token de notre
 
 ![Copy Token](./img/copytoken.png)
 
-**ATTENTION !** : si quelqu'un trouve le moyen de récupérer ce token, cette personne aura le contrôle total de votre bot (et accessoirement des serveurs sur lesquels il se trouve) (mauvaise idée, vu qu'il est un peu admin)
+**ATTENTION !** : si quelqu'un trouve le moyen de récupérer ce token, cette personne aura le contrôle total de votre bot (et accessoirement des serveurs sur lesquels il se trouve) (mauvaise idée, vu qu'on l'a mis admin)
